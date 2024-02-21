@@ -8,8 +8,12 @@ Apple M3 Max
 128 GB
 
 # Non-optimistic
-On main branch you will find a normal merklization circuit (no optimistic table)
+On no-table branch you will find a normal merklization circuit (no optimistic table)
 I get around a 1.97s proving time.
 
 # Optimistic table
-On 
+On main we have our new optimistic table scheme (poorly implemented). 
+
+The proof takes around 0.385s
+
+That is a 5.11x speedup with a really bad implementation.
