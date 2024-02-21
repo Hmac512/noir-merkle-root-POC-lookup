@@ -1,0 +1,43 @@
+use dep::std;
+
+// Returns the merkle root of the tree from the provided leaf, path indices, siblings with poseidon hash.
+pub fn verify_table(table: [[Field;3];8]) {
+    for i in 0..n {
+        expected = std::hash::poseidon::bn254::hash_2([table[i][0], table[i][1]]);
+        assert_eq!(expected, table[i][2]);
+    }
+}
+
+#[test]
+fn test_verify_table() {
+        let table = [
+        [
+            0x1e77b02b684acc2e47e45e8f1d0befb4474a49d1c31f6bd9f320c5d7677800d0, 0x201a514a1e640d6e8d4a3ba73e2ed405bfac3eafcb7a931279a4f3cff8f4d3d8, 0x1304786fcda8127b65df666daddb775afa5552c0de42daf3e816ff6d3e8237d2
+        ],
+        [
+            0x1304786fcda8127b65df666daddb775afa5552c0de42daf3e816ff6d3e8237d2, 0x24ffe7559df02772a5db10ec8033ddb497cdf5930d59f09668fd36f3b8dc3776, 0x282311cb70b1804a5c7babab6b9a660d634f07ccc5446383c1091724d63755fb
+        ],
+        [
+            0x19a9b039a8db62abf95649f12d39e80e0e64ccc59e5a3ed82010b38197ebf4b3, 0x282311cb70b1804a5c7babab6b9a660d634f07ccc5446383c1091724d63755fb, 0x20add879d834f4551bb5b706677c8e022cb51b8232e90938db6cc44a5c5424ef
+        ],
+        [
+            0x026b7b8746f3e3fe8f2f926960e31d00f650b323a6b028bb5ef7a599d5330514, 0x20add879d834f4551bb5b706677c8e022cb51b8232e90938db6cc44a5c5424ef, 0x2a56c31144b02f95e533022a1c741fd92610b4e4d93c4235008708214fa0ce5e
+        ],
+        [
+            0x2a56c31144b02f95e533022a1c741fd92610b4e4d93c4235008708214fa0ce5e, 0x0742b41951cffa97648276e4ef22d50f678a96f2c3a82531eb476ea6dcdd78c9, 0x2c021f2fe56c1a5f6b2a32153551b0ed362a30874a196fc379ffad505c0c618e
+        ],
+        [
+            0x0a42bdd08130b75d6047eb3396344dde4bf3650ed52b1e15cd30639ef93a4dd8, 0x2c021f2fe56c1a5f6b2a32153551b0ed362a30874a196fc379ffad505c0c618e, 0x22e8e34fa67643a7441e85981343361f2fc6a2eea7f527df7c632722c2aa6b8d
+        ],
+        [
+            0x1d6c9e3231ef23f033b6947f0957644544d35be0b30d827c831896696d176ef2, 0x22e8e34fa67643a7441e85981343361f2fc6a2eea7f527df7c632722c2aa6b8d, 0x268fcf86404f382196ab004bbdd44cabcf671445b079de917b324437e5f4da43
+        ],
+        [
+            0x268fcf86404f382196ab004bbdd44cabcf671445b079de917b324437e5f4da43, 0x1c13e94facd99932e21b33d63f282236763bd528405d29245de90f787a60eb08, 0x07c10b73fd0058eb00758a3e121f3649bac0af883f85f2c2918f31adf1e673d9
+        ]
+    ];
+
+    verify_table(table);
+
+
+}

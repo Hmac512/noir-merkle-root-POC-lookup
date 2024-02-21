@@ -1,2 +1,8 @@
-target/
-proofs/
+merkle-root/target/
+merkle-root/proofs/
+
+
+verify-table/target/
+verify-table/proofs/
+
+.DS_Store
