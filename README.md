@@ -17,3 +17,11 @@ On main we have our new optimistic table scheme (poorly implemented).
 The proof takes around 0.385s
 
 That is a 5.11x speedup with a really bad implementation.
+
+# Verifying the table
+
+When we use the optimistic table, the table is a public input of the proof we get.
+
+We can have infrastructure verify the table on behalf of the user, in order to speed up mobile proof generation.
+
+It takes me about 2s to verify the table we used optimistically. All of that is computation the user can avoid :)
