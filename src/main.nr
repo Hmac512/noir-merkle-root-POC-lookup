@@ -1,0 +1,108 @@
+use dep::std;
+
+// Returns the merkle root of the tree from the provided leaf, path indices, siblings with poseidon hash.
+pub fn main(
+    leaf: Field,
+    path_indices: [Field;8],
+    siblings: [Field;8],
+    table: [[Field;3];8]
+) -> pub (Field, [[Field;3];8]) {
+    let n = siblings.len();
+    let mut current = leaf;
+    for i in 0..n {
+        let is_right = (path_indices[i] == 1) as bool;
+        let (hash_left, hash_right) = if is_right {
+            (siblings[i], current)
+        } else {
+            (current, siblings[i])
+        };
+        assert(hash_left == table[i][0]);
+        assert(hash_right == table[i][1]);
+
+        current = table[i][2];
+    }
+    (current, table)
+}
+
+#[test]
+fn test_compute_merkle_root() {
+    let leaf = 13780856135824609486835123660791248959181113742546918549559321242116770234576;
+    let path_indices = [0, 0, 1, 1, 0, 1, 1, 0];
+    let siblings = [
+        14520510218039433773459597944105601781578483631006408988284677481489650471896, 16735405162150476769165535806199980191266151907719469609340290185602038249334, 11607634630385916762103142687024023731847490136503700052557112073181947753651, 1094530894963466396181348105151045704221228209480186211832907007839607915796, 3284044843315180235425920080565507273212761221150458610158014968492963231945, 4641050443441813769099735638332230934538706616831662404912867311564816535000, 13308983921089595976695015024214414181663897095192147251475586735720084500210, 12699940109500066053124654505808015855541980379149317240855603319465855478536
+    ];
+
+    let table = [
+        [
+            0x1e77b02b684acc2e47e45e8f1d0befb4474a49d1c31f6bd9f320c5d7677800d0, 0x201a514a1e640d6e8d4a3ba73e2ed405bfac3eafcb7a931279a4f3cff8f4d3d8, 0x1304786fcda8127b65df666daddb775afa5552c0de42daf3e816ff6d3e8237d2
+        ],
+        [
+            0x1304786fcda8127b65df666daddb775afa5552c0de42daf3e816ff6d3e8237d2, 0x24ffe7559df02772a5db10ec8033ddb497cdf5930d59f09668fd36f3b8dc3776, 0x282311cb70b1804a5c7babab6b9a660d634f07ccc5446383c1091724d63755fb
+        ],
+        [
+            0x19a9b039a8db62abf95649f12d39e80e0e64ccc59e5a3ed82010b38197ebf4b3, 0x282311cb70b1804a5c7babab6b9a660d634f07ccc5446383c1091724d63755fb, 0x20add879d834f4551bb5b706677c8e022cb51b8232e90938db6cc44a5c5424ef
+        ],
+        [
+            0x026b7b8746f3e3fe8f2f926960e31d00f650b323a6b028bb5ef7a599d5330514, 0x20add879d834f4551bb5b706677c8e022cb51b8232e90938db6cc44a5c5424ef, 0x2a56c31144b02f95e533022a1c741fd92610b4e4d93c4235008708214fa0ce5e
+        ],
+        [
+            0x2a56c31144b02f95e533022a1c741fd92610b4e4d93c4235008708214fa0ce5e, 0x0742b41951cffa97648276e4ef22d50f678a96f2c3a82531eb476ea6dcdd78c9, 0x2c021f2fe56c1a5f6b2a32153551b0ed362a30874a196fc379ffad505c0c618e
+        ],
+        [
+            0x0a42bdd08130b75d6047eb3396344dde4bf3650ed52b1e15cd30639ef93a4dd8, 0x2c021f2fe56c1a5f6b2a32153551b0ed362a30874a196fc379ffad505c0c618e, 0x22e8e34fa67643a7441e85981343361f2fc6a2eea7f527df7c632722c2aa6b8d
+        ],
+        [
+            0x1d6c9e3231ef23f033b6947f0957644544d35be0b30d827c831896696d176ef2, 0x22e8e34fa67643a7441e85981343361f2fc6a2eea7f527df7c632722c2aa6b8d, 0x268fcf86404f382196ab004bbdd44cabcf671445b079de917b324437e5f4da43
+        ],
+        [
+            0x268fcf86404f382196ab004bbdd44cabcf671445b079de917b324437e5f4da43, 0x1c13e94facd99932e21b33d63f282236763bd528405d29245de90f787a60eb08, 0x07c10b73fd0058eb00758a3e121f3649bac0af883f85f2c2918f31adf1e673d9
+        ]
+    ];
+
+    // let table = Table {
+    //     entries: [
+    //         TableEntry {
+    //             left: 0x1e77b02b684acc2e47e45e8f1d0befb4474a49d1c31f6bd9f320c5d7677800d0,
+    //             right: 0x201a514a1e640d6e8d4a3ba73e2ed405bfac3eafcb7a931279a4f3cff8f4d3d8,
+    //             output: 0x1304786fcda8127b65df666daddb775afa5552c0de42daf3e816ff6d3e8237d2
+    //         },
+    //         TableEntry {
+    //             left: 0x1304786fcda8127b65df666daddb775afa5552c0de42daf3e816ff6d3e8237d2,
+    //             right: 0x24ffe7559df02772a5db10ec8033ddb497cdf5930d59f09668fd36f3b8dc3776,
+    //             output: 0x282311cb70b1804a5c7babab6b9a660d634f07ccc5446383c1091724d63755fb
+    //         },
+    //         TableEntry {
+    //             left: 0x19a9b039a8db62abf95649f12d39e80e0e64ccc59e5a3ed82010b38197ebf4b3,
+    //             right: 0x282311cb70b1804a5c7babab6b9a660d634f07ccc5446383c1091724d63755fb,
+    //             output: 0x20add879d834f4551bb5b706677c8e022cb51b8232e90938db6cc44a5c5424ef
+    //         },
+    //         TableEntry {
+    //             left: 0x026b7b8746f3e3fe8f2f926960e31d00f650b323a6b028bb5ef7a599d5330514,
+    //             right: 0x20add879d834f4551bb5b706677c8e022cb51b8232e90938db6cc44a5c5424ef,
+    //             output: 0x2a56c31144b02f95e533022a1c741fd92610b4e4d93c4235008708214fa0ce5e
+    //         },
+    //         TableEntry {
+    //             left: 0x2a56c31144b02f95e533022a1c741fd92610b4e4d93c4235008708214fa0ce5e,
+    //             right: 0x0742b41951cffa97648276e4ef22d50f678a96f2c3a82531eb476ea6dcdd78c9,
+    //             output: 0x2c021f2fe56c1a5f6b2a32153551b0ed362a30874a196fc379ffad505c0c618e
+    //         },
+    //         TableEntry {
+    //             left: 0x0a42bdd08130b75d6047eb3396344dde4bf3650ed52b1e15cd30639ef93a4dd8,
+    //             right: 0x2c021f2fe56c1a5f6b2a32153551b0ed362a30874a196fc379ffad505c0c618e,
+    //             output: 0x22e8e34fa67643a7441e85981343361f2fc6a2eea7f527df7c632722c2aa6b8d
+    //         },
+    //         TableEntry {
+    //             left: 0x1d6c9e3231ef23f033b6947f0957644544d35be0b30d827c831896696d176ef2,
+    //             right: 0x22e8e34fa67643a7441e85981343361f2fc6a2eea7f527df7c632722c2aa6b8d,
+    //             output: 0x268fcf86404f382196ab004bbdd44cabcf671445b079de917b324437e5f4da43
+    //         },
+    //         TableEntry {
+    //             left: 0x268fcf86404f382196ab004bbdd44cabcf671445b079de917b324437e5f4da43,
+    //             right: 0x1c13e94facd99932e21b33d63f282236763bd528405d29245de90f787a60eb08,
+    //             output: 0x07c10b73fd0058eb00758a3e121f3649bac0af883f85f2c2918f31adf1e673d9
+    //         }
+    //     ]
+    // };
+    let output = main(leaf, path_indices, siblings, table);
+    assert(output.0 == 3507270469832926990571112645872386345557614009066375654691910206440851534809);
+}
