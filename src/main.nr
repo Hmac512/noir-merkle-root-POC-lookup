@@ -5,8 +5,8 @@ pub fn main(
     leaf: Field,
     path_indices: [Field;8],
     siblings: [Field;8],
-    table: [[Field;3];8]
-) -> pub (Field, [[Field;3];8]) {
+    table: pub [[Field;3];8]
+) -> pub Field {
     let n = siblings.len();
     let mut current = leaf;
     for i in 0..n {
@@ -21,7 +21,7 @@ pub fn main(
 
         current = table[i][2];
     }
-    (current, table)
+    current
 }
 
 #[test]
@@ -58,6 +58,6 @@ fn test_compute_merkle_root() {
             0x268fcf86404f382196ab004bbdd44cabcf671445b079de917b324437e5f4da43, 0x1c13e94facd99932e21b33d63f282236763bd528405d29245de90f787a60eb08, 0x07c10b73fd0058eb00758a3e121f3649bac0af883f85f2c2918f31adf1e673d9
         ]
     ];
-    let output = main(leaf, path_indices, siblings, table);
-    assert(output.0 == 3507270469832926990571112645872386345557614009066375654691910206440851534809);
+    let root = main(leaf, path_indices, siblings, table);
+    assert(root == 3507270469832926990571112645872386345557614009066375654691910206440851534809);
 }
