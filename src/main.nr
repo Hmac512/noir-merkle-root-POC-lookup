@@ -1,7 +1,7 @@
 use dep::std;
 
 // Returns the merkle root of the tree from the provided leaf, path indices, siblings with poseidon hash.
-pub fn main(leaf: Field, path_indices: [Field;8], siblings: [Field;8]) -> pub Field {
+pub fn main(leaf: Field, path_indices: [Field; 8], siblings: [Field; 8]) -> pub Field {
     let n = siblings.len();
     let mut current = leaf;
     for i in 0..n {
