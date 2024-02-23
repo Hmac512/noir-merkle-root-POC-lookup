@@ -1,6 +1,7 @@
 use dep::std;
 
-// Returns the merkle root of the tree from the provided leaf, path indices, siblings with poseidon hash.
+// Verifies the given lookup table. 
+// The hash of the first 2 columns == the third column.
 pub fn main(table: [[Field;3];8]) {
     for i in 0..8 {
         let expected = std::hash::poseidon::bn254::hash_2([table[i][0], table[i][1]]);
